@@ -3,8 +3,12 @@ import {prisma} from "@/lib/prisma"
 
 // Inngest Function to save user data to a database
 export const syncUserCreation = inngest.createFunction(
-  {id: 'sync-user-create'},
-  {event: 'clerk/user.created'},
+  {
+    id: 'sync-user-create',
+    triggers: {
+      event: 'clerk/user.created',
+    }
+  },
   async ({event}) => {
     const {data} = event
     await prisma.user.create({
