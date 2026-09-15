@@ -6,8 +6,7 @@ export const syncUserCreation = inngest.createFunction(
   {
     id: "sync-user-create",
     triggers: {
-      event: "webhook/request.received",
-      if: 'event.data.data.type == "user.created"',
+      event: "clerk/user.created",
     },
   },
   async ({ event }) => {
@@ -56,8 +55,8 @@ export const syncUserDeletion = inngest.createFunction(
     {
       id: 'sync-user-delete',
       triggers: {
-        event: 'webhook/request.received',
-        if: 'event.data.data.type == "user.deleted"'
+        event: 'clerk/user.deleted',
+
       }
     },
     async ({ event }) => {
