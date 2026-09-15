@@ -5,13 +5,13 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "prisma generate && next build",
+    "postinstall": "prisma generate",
     "start": "next start",
     "lint": "next lint",
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
-    "db:studio": "prisma studio",
-    "postinstall": "prisma generate || exit 0"
+    "db:studio": "prisma studio"
   },
   "dependencies": {
     "@clerk/nextjs": "^7.9.2",
