@@ -10,17 +10,24 @@ export const syncUserCreation = inngest.createFunction(
     }
   },
   async ({event}) => {
-    const {data} = event
+    const { data } = event;
+    const user = data.data?.user;
+
+    if (!user) {
+      console.log("⚠️ No hay usuario en este webhook");
+      return;
+    }
+
     await prisma.user.create({
       data: {
-        id: data.id,
-        email: data.email_addresses[0].email_address,
-        name: `${data.first_name} ${data.last_name}`,
-        image: data.image_url,
+        id: user.id,
+        email: user.email_addresses[0].email_address,
+        name: `${user.first_name} ${user.last_name}`,
+        image: user.image_url,
       }
-    })          
+    });
   }
-)
+);
 
 // Inngest Function to update user data in database
 export const syncUserUpdation = inngest.createFunction(
