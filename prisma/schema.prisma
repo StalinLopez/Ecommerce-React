@@ -1,10 +1,9 @@
 generator client {
-    provider        = "prisma-client-js"
-    previewFeatures = ["driverAdapters"]
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
 }
-
 datasource db {
-    provider = "postgresql"
+  provider = "postgresql"
 }
 
 // Required for creating a User: id, name, email, image, cart (optional JSON string)
