@@ -6,12 +6,13 @@ export const syncUserCreation = inngest.createFunction(
   {
     id: "sync-user-create",
     triggers: {
-      event: "webhook/request.received"
-    }
+      event: "webhook/request.received",
+      if: 'event.data.data.type == "user.created"',
+    },
   },
-  async ({event}) => {
+  async ({ event }) => {
     const { data } = event;
-    const user = data.data?.user;
+    const user = data.data?.data;
 
     if (!user) {
       console.log("⚠️ No hay usuario en este webhook");
@@ -24,7 +25,7 @@ export const syncUserCreation = inngest.createFunction(
         email: user.email_addresses[0].email_address,
         name: `${user.first_name} ${user.last_name}`,
         image: user.image_url,
-      }
+      },
     });
   }
 );
@@ -55,7 +56,8 @@ export const syncUserDeletion = inngest.createFunction(
     {
       id: 'sync-user-delete',
       triggers: {
-        event: 'clerk/user.deleted'
+        event: 'webhook/request.received',
+        if: 'event.data.data.type == "user.deleted"'
       }
     },
     async ({ event }) => {
