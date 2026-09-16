@@ -10,24 +10,36 @@ export const syncUserCreation = inngest.createFunction(
     },
   },
   async ({ event }) => {
-    const { data } = event;
-    const user = data.data?.data;
+    const user = event.data;
 
     if (!user) {
       console.log("⚠️ No hay usuario en este webhook");
       return;
     }
 
+    const email =
+      user.email_addresses.find(
+        (email) => email.id === user.primary_email_address_id
+      )?.email_address;
+
+    if (!email) {
+      console.log("⚠️ El usuario no tiene un email válido");
+      return;
+    }
+
     await prisma.user.create({
       data: {
         id: user.id,
-        email: user.email_addresses[0].email_address,
-        name: `${user.first_name} ${user.last_name}`,
+        email,
+        name: `${user.first_name ?? ""} ${user.last_name ?? ""}`.trim(),
         image: user.image_url,
       },
     });
+
+    console.log(`✅ Usuario ${user.id} sincronizado correctamente`);
   }
 );
+
 
 // Inngest Function to update user data in database
 export const syncUserUpdation = inngest.createFunction(
