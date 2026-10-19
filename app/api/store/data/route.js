@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import prisma from "@/lib/prismadb";
+import {prisma} from "@/lib/prisma"
 
 //geth store info % store products
 
