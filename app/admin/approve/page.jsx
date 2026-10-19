@@ -4,27 +4,49 @@ import StoreInfo from "@/components/admin/StoreInfo"
 import Loading from "@/components/Loading"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
+import axios from "axios"
+import { useAuth, useUser } from "@clerk/nextjs"
 
 export default function AdminApprove() {
-
+    const {user} = useUser()
+    const {getToken} = useAuth()
     const [stores, setStores] = useState([])
     const [loading, setLoading] = useState(true)
 
 
     const fetchStores = async () => {
-        setStores(storesDummyData)
-        setLoading(false)
+ try{
+    const token = await getToken()
+    const {data} = await axios.get('/api/admin/approve-store',{
+        headers:{Authorization:`bearer ${token}`}
+    })
+    setStores(data.stores)
+ }catch(error){
+     toast.error(error?.response?.data?.error || error.message)
+ }
+setLoading(false)
     }
 
     const handleApprove = async ({ storeId, status }) => {
-        // Logic to approve a store
-
-
+        try{
+            const token = await getToken()
+            const {data} = await axios.post('/api/admin/approve-store',{storeId,
+            status},{
+            headers:{Authorization:`Bearer ${token}`}
+        })
+            toast.success(data.message)
+            await fetchStores()
+        }catch(error){
+        toast.error(error?.response?.data?.error || error.message)
+        }
     }
 
     useEffect(() => {
-            fetchStores()
-    }, [])
+        if(user){
+         fetchStores()
+        }
+  
+    }, [user])
 
     return !loading ? (
         <div className="text-slate-500 mb-28">
