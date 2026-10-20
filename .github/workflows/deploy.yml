@@ -41,11 +41,14 @@ jobs:
       - name: Instalar Vercel CLI
         run: npm i -g vercel
 
+      - name: Vincular proyecto
+        run: vercel link --yes --project ecommerce-react-1eso --scope stalin9 --token=${{ secrets.VERCEL_TOKEN }}
+
       - name: Pull de configuración
         run: vercel pull --yes --environment=${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }} --scope stalin9 --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Build
-        run: vercel build ${{ github.ref == 'refs/heads/main' && '--prod' || '' }} --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel build ${{ github.ref == 'refs/heads/main' && '--prod' || '' }} --scope stalin9 --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy
-        run: vercel deploy --prebuilt ${{ github.ref == 'refs/heads/main' && '--prod' || '' }} --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel deploy --prebuilt ${{ github.ref == 'refs/heads/main' && '--prod' || '' }} --scope stalin9 --token=${{ secrets.VERCEL_TOKEN }}
