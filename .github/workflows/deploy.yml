@@ -34,5 +34,11 @@ jobs:
       - name: Build
         run: vercel build ${{ github.ref == 'refs/heads/main' && '--prod' || '' }} --scope stalin9 --token=${{ secrets.VERCEL_TOKEN }}
 
+
+        
+
       - name: Deploy
         run: vercel deploy --prebuilt ${{ github.ref == 'refs/heads/main' && '--prod' || '' }} --scope stalin9 --token=${{ secrets.VERCEL_TOKEN }}
+
+
+
