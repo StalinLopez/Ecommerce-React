@@ -16,8 +16,8 @@ export async function POST(req) {
         const formData = await req.formData();
         const name = formData.get("name");
         const description = formData.get("description");
-        const mrp = formData.get("mrp");
-        const price = formData.get("price");
+        const mrp = Number(formData.get("mrp"));
+        const price = Number(formData.get("price"));
         const category = formData.get("category");
         const images = formData.getAll("images");
 

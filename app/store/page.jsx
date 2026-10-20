@@ -5,8 +5,11 @@ import { CircleDollarSignIcon, ShoppingBasketIcon, StarIcon, TagsIcon } from "lu
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
-
+import { useAuth } from "@clerk/nextjs"
+import axios from "axios"
+import toast from "react-hot-toast"
 export default function Dashboard() {
+        const {getToken} = useAuth()
 
     const currency = process.env.NEXT_PUBLIC_CURRENCY_SYMBOL || '$'
 
@@ -28,7 +31,18 @@ export default function Dashboard() {
     ]
 
     const fetchDashboardData = async () => {
-        setDashboardData(dummyStoreDashboardData)
+       try{
+            const token = await getToken()
+            const {data} = await axios.get('/api/store/dashboard',{headers:{
+                Authorization:`Bearer ${token}`
+            }})
+            console.log(data)
+            setDashboardData(data.dashboardData)
+
+        }catch(error){
+            console.log(error)
+            toast.error(error?.response?.data?.error || error.message)
+        }
         setLoading(false)
     }
 

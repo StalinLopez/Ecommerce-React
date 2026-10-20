@@ -15,7 +15,7 @@ export async function GET(req   ) {
        const storeInfo = await prisma.store.findUnique({
             where: {userId: userId},
         });
-        return NextResponse.json({storeInfo}, {status: 200});   
+        return NextResponse.json({ isSeller: true, storeInfo }, { status: 200 });   
     }catch (error) {
         console.error("Error in GET /api/store/seller:", error);
         return NextResponse.json({error: "Internal Server Error"}, {status: 500});

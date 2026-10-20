@@ -2,9 +2,10 @@
 import { useEffect, useState } from "react"
 import { format } from "date-fns"
 import toast from "react-hot-toast"
+import axios from "axios"
 import { DeleteIcon } from "lucide-react"
 import { couponDummyData } from "@/assets/assets"
-import axios from "axios"
+
 import { useAuth, useUser } from "@clerk/nextjs"
 
 export default function AdminCoupons() {
@@ -61,7 +62,7 @@ export default function AdminCoupons() {
             const confirm = window.confirm("are you sure to delete")
             if(!confirm) return;
             const token = await getToken()
-            await axios.delete('/api/admin/coupon?code=${code}',{headers:{
+            await axios.delete(`/api/admin/coupon?code=${code}`,{headers:{
             Authorization:`Bearer ${token}`}})
             await fetchCoupons()
             toast.success("coupon delete")

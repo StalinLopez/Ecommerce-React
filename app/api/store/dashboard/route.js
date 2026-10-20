@@ -1,5 +1,7 @@
-
-
+import { getAuth } from "@clerk/nextjs/server";
+import {prisma} from "@/lib/prisma"
+import authSeller from "@/middlewares/authSeller";
+import { NextResponse } from "next/server";
 // get dashboard data for seller
 export async function GET(req) {
     try {
@@ -20,7 +22,7 @@ const dashboardData = {
     totalEarnings:Math.round(orders.reduce((acc, order) => acc + order.total, 0)),
     totalProducts: products.length,
 };
-return NextResponse.json(dashboardData, { status: 200 });
+return NextResponse.json({dashboardData}, { status: 200 });
 
     }catch (error) {
         console.error("Error in GET /api/store/dashboard:", error);
