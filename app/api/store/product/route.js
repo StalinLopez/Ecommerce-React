@@ -25,6 +25,7 @@ export async function POST(req) {
             return NextResponse.json({error: "Missing required fields"}, {status: 400});
         }
 
+        
         //upload images to imagekit
         const uploadedImages = await Promise.all(images.map(async (image) => {
             const buffer = Buffer.from(await image.arrayBuffer());
