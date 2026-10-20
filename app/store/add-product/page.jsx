@@ -20,6 +20,9 @@ export default function StoreAddProduct() {
         price: 0,
         category: "",
     })
+
+
+    
     const [loading, setLoading] = useState(false)
     const {getToken} = useAuth()
 
