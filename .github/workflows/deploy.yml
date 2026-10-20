@@ -16,6 +16,11 @@ jobs:
           node-version: 22
           cache: npm
 
+      - name: Crear .env
+        run: printf '%s\n' "$ENV_FILE" > .env
+        env:
+          ENV_FILE: ${{ secrets.ENV_PRODUCTION }}
+
       - name: Instalar dependencias
         run: npm ci
         env:
@@ -33,12 +38,6 @@ jobs:
 
       - name: Build
         run: vercel build ${{ github.ref == 'refs/heads/main' && '--prod' || '' }} --scope stalin9 --token=${{ secrets.VERCEL_TOKEN }}
-        env:
-          DATABASE_URL: postgresql://user:pass@localhost:5432/db
-          DIRECT_URL: postgresql://user:pass@localhost:5432/db
 
       - name: Deploy
         run: vercel deploy --prebuilt ${{ github.ref == 'refs/heads/main' && '--prod' || '' }} --scope stalin9 --token=${{ secrets.VERCEL_TOKEN }}
-
-
-
